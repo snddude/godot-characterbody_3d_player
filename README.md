@@ -9,7 +9,7 @@ A first person character controller based on the CharacterBody3D node and a node
 The following plugins need to be present in your project:
 - [godot-nbfsm](https://github.com/snddude/godot-nbfsm)
 
-After installing them, download the [latest release](https://github.com/snddude/godot-rigidbody_3d_player/releases/latest) of this plugin, which comes in a zip archive. Extract it into your project's "addons/" folder, then go to Project → Project Settings → Plugins and enable "CharacterBody3D Player".
+After installing them, download the [latest release](https://github.com/snddude/godot-characterbody_3d_player/releases/latest) of this plugin, which comes in a zip archive. Extract it into your project's "addons/" folder, then go to Project → Project Settings → Plugins and enable "CharacterBody3D Player".
 
 ## Usage
 
