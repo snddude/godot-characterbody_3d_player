@@ -36,3 +36,7 @@ func _process(_delta: float) -> void:
 
 func get_scaled_gravity() -> Vector3:
 	return get_gravity() * gravity_scale
+
+
+func get_jump_velocity() -> float:
+	return sqrt(2.0 * -get_scaled_gravity().y * jump_height)
