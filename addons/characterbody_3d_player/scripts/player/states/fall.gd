@@ -19,7 +19,7 @@ func physics_update(delta: float) -> void:
 
 	player.velocity.y += player.get_scaled_gravity().y * delta
 
-	if player.is_on_floor() and player.velocity.y < 0.0:
-		finished.emit(IDLE)
-
 	player.move_and_slide()
+
+	if player.is_on_floor() and player.velocity.y <= 0.0:
+		finished.emit(IDLE)
