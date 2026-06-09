@@ -13,10 +13,22 @@ extends CharacterBody3D
 @export var air_decel_rate: float
 @export_group("Nodes")
 @export var neck: Node3D
+@export var head: Node3D
 
 var wish_dir := Vector3.ZERO
 
 @onready var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
+
+
+func _ready() -> void:
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+
+
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseMotion:
+		neck.rotation_degrees.y -= deg_to_rad(event.relative.x * sensitivity)
+		head.rotation_degrees.x -= deg_to_rad(event.relative.y * sensitivity)
+		head.rotation_degrees.x = clamp(head.rotation_degrees.x, -90.0, 90.0)
 
 
 func _process(_delta: float) -> void:
