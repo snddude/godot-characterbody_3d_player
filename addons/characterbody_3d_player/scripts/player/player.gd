@@ -5,6 +5,7 @@ extends CharacterBody3D
 @export var sensitivity: float
 @export_group("Movement")
 @export var walk_speed: float
+@export var gravity_scale: float = 1.0
 @export var jump_height: float
 @export_subgroup("Acceleration")
 @export var floor_accel_rate: float
@@ -16,8 +17,6 @@ extends CharacterBody3D
 @export var head: Node3D
 
 var wish_dir := Vector3.ZERO
-
-@onready var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 
 
 func _ready() -> void:
@@ -33,3 +32,7 @@ func _input(event: InputEvent) -> void:
 
 func _process(_delta: float) -> void:
 	wish_dir = Vector3(Input.get_axis("left", "right"), 0.0, Input.get_axis("forward", "back"))
+
+
+func get_scaled_gravity() -> Vector3:
+	return get_gravity() * gravity_scale

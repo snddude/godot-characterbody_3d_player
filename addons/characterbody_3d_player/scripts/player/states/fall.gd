@@ -17,7 +17,7 @@ func physics_update(delta: float) -> void:
 			1.0 - exp(-rate * delta)
 	)
 
-	player.velocity.y -= player.gravity * delta
+	player.velocity.y += player.get_scaled_gravity().y * delta
 
 	if player.is_on_floor() and player.velocity.y < 0.0:
 		finished.emit(IDLE)
