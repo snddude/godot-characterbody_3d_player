@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bqxh6ancdmoxd"]
 
 [ext_resource type="Script" uid="uid://cvrv46kye502a" path="res://addons/characterbody_3d_player/scripts/player/player.gd" id="1_i8wya"]
+[ext_resource type="Texture2D" uid="uid://dbtu3ctjhapwn" path="res://addons/characterbody_3d_player/assets/sprites/hud/crosshair.svg" id="2_8twji"]
 [ext_resource type="Script" uid="uid://binoo8hyy8hxf" path="res://addons/characterbody_3d_player/scripts/player/eyes.gd" id="4_h5h42"]
 [ext_resource type="Script" uid="uid://cxbpph0x0glqw" path="res://addons/characterbody_3d_player/scripts/player/states/idle.gd" id="4_i8wya"]
 [ext_resource type="Script" uid="uid://bofs2e8mdx4vv" path="res://addons/nbfsm/scripts/components/state_machine.gd" id="5_buavc"]
@@ -24,6 +25,23 @@ air_accel_rate = 3.0
 air_decel_rate = 0.1
 neck = NodePath("Neck")
 head = NodePath("Neck/Head")
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=1070400714]
+
+[node name="Crosshair" type="TextureRect" parent="HUD" unique_id=1814529907]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 2.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_8twji")
+expand_mode = 1
 
 [node name="Collider" type="CollisionShape3D" parent="." unique_id=2036960696]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
