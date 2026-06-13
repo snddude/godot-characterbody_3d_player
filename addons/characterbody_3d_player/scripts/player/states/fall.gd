@@ -22,4 +22,7 @@ func physics_update(delta: float) -> void:
 	player.move_and_slide()
 
 	if player.is_on_floor() and player.velocity.y <= 0.0:
+		if player.get_platform_velocity().length() > 0.0: # This fixed weird sliding when landing
+			player.velocity = Vector3.ZERO                # on a moving platform.
+
 		finished.emit(IDLE)
