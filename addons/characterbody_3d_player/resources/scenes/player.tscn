@@ -67,14 +67,19 @@ script = ExtResource("5_buavc")
 initial_state = NodePath("Idle")
 metadata/_custom_type_script = "uid://bofs2e8mdx4vv"
 
-[node name="Idle" type="Node" parent="PlayerStateMachine" unique_id=1542011909]
+[node name="Idle" type="Node" parent="PlayerStateMachine" unique_id=1542011909 node_paths=PackedStringArray("walk_state", "fall_state")]
 script = ExtResource("4_i8wya")
+walk_state = NodePath("../Walk")
+fall_state = NodePath("../Fall")
 metadata/_custom_type_script = "uid://cxbpph0x0glqw"
 
-[node name="Walk" type="Node" parent="PlayerStateMachine" unique_id=829027036]
+[node name="Walk" type="Node" parent="PlayerStateMachine" unique_id=829027036 node_paths=PackedStringArray("idle_state", "fall_state")]
 script = ExtResource("5_pu5xs")
+idle_state = NodePath("../Idle")
+fall_state = NodePath("../Fall")
 metadata/_custom_type_script = "uid://dtgva038anldb"
 
-[node name="Fall" type="Node" parent="PlayerStateMachine" unique_id=295857534]
+[node name="Fall" type="Node" parent="PlayerStateMachine" unique_id=295857534 node_paths=PackedStringArray("idle_state")]
 script = ExtResource("8_7gpmo")
+idle_state = NodePath("../Idle")
 metadata/_custom_type_script = "uid://b6k88l6l8aiua"

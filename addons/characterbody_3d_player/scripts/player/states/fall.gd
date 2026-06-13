@@ -1,8 +1,11 @@
 class_name Fall
 extends PlayerState
 
+@export_group("States")
+@export var idle_state: Idle
 
-func physics_update(delta: float) -> void:
+
+func physics_update(delta: float) -> PlayerState:
 	var direction: Vector3 = (player.neck.global_basis * player.wish_dir).normalized()
 	var rate: float = player.air_accel_rate if direction.length() > 0.0 else player.air_decel_rate
 
@@ -25,4 +28,6 @@ func physics_update(delta: float) -> void:
 		if player.get_platform_velocity().length() > 0.0: # This fixed weird sliding when landing
 			player.velocity = Vector3.ZERO                # on a moving platform.
 
-		finished.emit(IDLE)
+		return idle_state
+	else:
+		return null
