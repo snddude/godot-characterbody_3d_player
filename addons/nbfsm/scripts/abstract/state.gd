@@ -2,26 +2,29 @@
 class_name State
 extends Node
 
-signal finished(new_state_path: String)
-
 
 func enter() -> void:
 	pass
 
 
 @warning_ignore("unused_parameter")
-func input_update(event: InputEvent) -> void:
-	pass
+func input_update(event: InputEvent) -> State:
+	return null
 
 
 @warning_ignore("unused_parameter")
-func update(delta: float) -> void:
-	pass
+func unhandled_input_update(event: InputEvent) -> State:
+	return null
 
 
 @warning_ignore("unused_parameter")
-func physics_update(delta: float) -> void:
-	pass
+func update(delta: float) -> State:
+	return null
+
+
+@warning_ignore("unused_parameter")
+func physics_update(delta: float) -> State:
+	return null
 
 
 func exit() -> void:

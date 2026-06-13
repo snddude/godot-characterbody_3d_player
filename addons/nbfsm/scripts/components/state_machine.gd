@@ -1,7 +1,7 @@
 class_name StateMachine
 extends Node
 
-signal state_changed(new_state_path: String)
+signal state_changed(new_state: State)
 
 @export var initial_state: State
 
@@ -9,10 +9,6 @@ var current_state: State = null
 
 
 func _ready() -> void:
-	for child in get_children():
-		if child is State:
-			child.finished.connect(change_state)
-
 	current_state = initial_state
 
 	if owner != null:
@@ -22,24 +18,34 @@ func _ready() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	current_state.input_update(event)
+	_process_state(current_state.input_update.bind(event))
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	_process_state(current_state.unhandled_input_update.bind(event))
 
 
 func _process(delta: float) -> void:
-	current_state.update(delta)
+	_process_state(current_state.update.bind(delta))
 
 
 func _physics_process(delta: float) -> void:
-	current_state.physics_update(delta)
+	_process_state(current_state.physics_update.bind(delta))
 
 
-func change_state(new_state_path: String) -> void:
-	if not has_node(new_state_path):
-		push_error('No such state "%s" in state machine "%s"'%[new_state_path, name])
+func change_state(new_state: State) -> void:
+	if new_state == current_state:
 		return
 
 	current_state.exit()
-	current_state = get_node(new_state_path)
+	current_state = new_state
 	current_state.enter()
 
-	state_changed.emit(new_state_path)
+	state_changed.emit(new_state)
+
+
+func _process_state(state_function: Callable) -> void:
+	var new_state: State = state_function.call()
+
+	if new_state != null:
+		change_state(new_state)
