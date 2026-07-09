@@ -12,7 +12,7 @@
 radius = 0.225
 height = 1.8
 
-[node name="Player" type="CharacterBody3D" unique_id=1974834231 node_paths=PackedStringArray("neck", "head")]
+[node name="Player" type="CharacterBody3D" unique_id=1974834231 node_paths=PackedStringArray("state_machine", "neck", "head")]
 floor_constant_speed = true
 platform_on_leave = 1
 script = ExtResource("1_i8wya")
@@ -24,6 +24,7 @@ floor_accel_rate = 15.0
 floor_decel_rate = 10.0
 air_accel_rate = 3.0
 air_decel_rate = 0.1
+state_machine = NodePath("PlayerStateMachine")
 neck = NodePath("Neck")
 head = NodePath("Neck/Head")
 
