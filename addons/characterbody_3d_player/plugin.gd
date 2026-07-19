@@ -17,16 +17,19 @@ const EVENTS: Dictionary[String, Variant] = {
 }
 
 
+func format_actions(actions: Array[String]) -> String:
+	var ret: String = ""
+
+	for action: String in actions:
+		ret += "  - %s: %s\n" % [action, OS.get_keycode_string(EVENTS[action])]
+
+	return ret
+
+
 func _enable_plugin() -> void:
-	var mapped: Array[String] = EditorActionMapper.bulk_map_actions(ACTIONS, EVENTS)
-	var mapped_text: String = ""
-
-	for action: String in mapped:
-		mapped_text += "  - %s: %s\n" % [action, OS.get_keycode_string(EVENTS[action])]
-
 	EditorNotifier.get_confirmation(
 			"The following actions have been added to the input map of your "
-			+ "project:\n%s" % mapped_text
+			+ "project:\n%s" % format_actions(EditorActionMapper.bulk_map_actions(ACTIONS, EVENTS))
 			+ "These actions will not appear in the input map tab until "
 			+ "another action is added or the editor is restarted.",
 			"Save & Restart",
@@ -35,15 +38,9 @@ func _enable_plugin() -> void:
 
 
 func _disable_plugin() -> void:
-	var unmapped: Array[String] = EditorActionMapper.bulk_unmap_actions(ACTIONS.keys())
-	var unmapped_text: String = ""
-
-	for action: String in unmapped:
-		unmapped_text += "  - %s: %s\n" % [action, OS.get_keycode_string(EVENTS[action])]
-
 	EditorNotifier.get_confirmation(
 			"The following actions have been removed from the input map of your "
-			+ "project:\n%s" % unmapped_text
+			+ "project:\n%s" % format_actions(EditorActionMapper.bulk_unmap_actions(ACTIONS.keys()))
 			+ "These actions will not disappear from the input map tab until "
 			+ "another action is added or the editor is restarted.",
 			"Save & Restart",
