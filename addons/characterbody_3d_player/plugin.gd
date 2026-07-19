@@ -27,8 +27,8 @@ func _enable_plugin() -> void:
 	EditorNotifier.get_confirmation(
 			"The following actions have been added to the input map of your "
 			+ "project:\n%s" % mapped_text
-			+ "These actions will not appear in the input map tab until another "
-			+ "action is added or the editor is restarted.",
+			+ "These actions will not appear in the input map tab until "
+			+ "another action is added or the editor is restarted.",
 			"Save & Restart",
 			"OK",
 			EditorInterface.restart_editor.bind(true))
@@ -44,8 +44,8 @@ func _disable_plugin() -> void:
 	EditorNotifier.get_confirmation(
 			"The following actions have been removed from the input map of your "
 			+ "project:\n%s" % unmapped_text
-			+ "These actions will not disappear in the input map tab until another "
-			+ "action is added or the editor is restarted.",
+			+ "These actions will not disappear from the input map tab until "
+			+ "another action is added or the editor is restarted.",
 			"Save & Restart",
 			"OK",
 			EditorInterface.restart_editor.bind(true))
