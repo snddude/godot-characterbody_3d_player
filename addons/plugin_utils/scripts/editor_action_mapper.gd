@@ -11,30 +11,17 @@ const INPUT_EVENT_TYPE_JOY_AXIS: InputEventType = 3
 
 
 static func map_action(
-		action_name: String,
+		action: String,
 		input_event_type: InputEventType,
 		input_event: Variant
 ) -> void:
-	var event: Variant = null
-	var input: Dictionary[String, Variant] = {}
-	var setting: String = "input/" + action_name
+	var event: Variant = _make_event(input_event_type, input_event)
 
-	match input_event_type:
-		INPUT_EVENT_TYPE_KEY: 
-			event = InputEventKey.new()
-			event.physical_keycode = input_event
-		INPUT_EVENT_TYPE_MOUSE_BUTTON:
-			event = InputEventMouseButton.new()
-			event.button_index = input_event
-		INPUT_EVENT_TYPE_JOY_BUTTON:
-			event = InputEventJoypadButton.new()
-			event.button_index = input_event
-		INPUT_EVENT_TYPE_JOY_AXIS:
-			event = InputEventJoypadMotion.new()
-			event.axis = input_event
-		_: 
-			push_error("Invalid InputEventType provided")
-			return
+	if event == null:
+		return
+
+	var setting: String = "input/" + action
+	var input: Dictionary[String, Variant] = {}
 
 	if ProjectSettings.has_setting(setting):
 		input = ProjectSettings.get_setting(setting)
@@ -70,12 +57,55 @@ static func unmap_input_event(
 		input_event_type: InputEventType,
 		input_event: Variant
 ) -> void:
-	var event: Variant = null
 	var setting: String = "input/" + action
+	var event: Variant = _make_event(input_event_type, input_event)
 
 	if not ProjectSettings.has_setting(setting):
 		push_error('Cannot unmap input event of nonexistent action "%s"')
 		return
+
+	if event == null:
+		return
+
+	var input: Dictionary[String, Variant] = ProjectSettings.get_setting(setting)
+	input["events"].erase(event)
+
+	ProjectSettings.set_setting(setting, input)
+	ProjectSettings.save()
+
+
+static func unmap_action(action: String) -> void:
+	if not ProjectSettings.has_setting("input/" + action):
+		push_error('Cannot unmap nonexistent action "%s"' % action)
+		return
+
+	ProjectSettings.set_setting("input/" + action, null)
+	ProjectSettings.save()
+
+
+static func bulk_unmap_input_events(
+		action: String,
+		events: Dictionary[InputEventType, Variant]
+) -> void:
+	for key: InputEventType in events.keys():
+		unmap_input_event(action, key, events[key])
+
+
+static func bulk_unmap_actions(actions: Array[String]) -> Array[String]:
+	var unmapped: Array[String] = []
+
+	for action: String in actions:
+		if not ProjectSettings.has_setting("input/" + action):
+			continue
+
+		unmap_action(action)
+		unmapped.append(action)
+
+	return unmapped
+
+
+static func _make_event(input_event_type: InputEventType, input_event: Variant) -> Variant:
+	var event: Variant = null
 
 	match input_event_type:
 		INPUT_EVENT_TYPE_KEY: 
@@ -92,32 +122,5 @@ static func unmap_input_event(
 			event.axis = input_event
 		_: 
 			push_error("Invalid InputEventType provided")
-			return
 
-	var input: Dictionary[String, Variant] = ProjectSettings.get_setting(setting)
-	input["events"].erase(event)
-
-	ProjectSettings.set_setting(setting, input)
-	ProjectSettings.save()
-
-
-static func unmap_action(action: String) -> void:
-	if not ProjectSettings.has_setting("input/" + action):
-		push_error('Cannot unmap nonexistent action "%s"' % action)
-		return
-
-	ProjectSettings.set_setting("input/%s" % action, null)
-	ProjectSettings.save()
-
-
-static func bulk_unmap_actions(actions: Array[String]) -> Array[String]:
-	var unmapped: Array[String] = []
-
-	for action: String in actions:
-		if not ProjectSettings.has_setting("input/" + action):
-			continue
-
-		unmap_action(action)
-		unmapped.append(action)
-
-	return unmapped
+	return event
